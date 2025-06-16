@@ -3,7 +3,7 @@ This repository implements in Qiskit a SELECT-style Quantum ROM for boolean func
 
 $$U \left|x\right>_n \left|y\right>_1 = \left|x\right>_n \left|y \oplus f(x)\right>_1$$
 
-and uses no ancillae. The resulting circuit, as compared with the naive implementation, will typically use fewer multi-controlled $X$ gates and/or uses multi-controlled $X$ gates with fewer control qubits. Specifically, included in this code is an optimization procedure that attempts to minimze the total number of control qubits across all multi-controlled X gates. Given that multi-controlled X gates can be implemented with circuit depth linear in the number of controls ([Saeedi and Pedram 2013](http://arxiv.org/abs/1303.3557)), this heuristic roughly optimizes for depth of the circuit while using no ancillae.
+and uses no ancillae. The resulting circuit, as compared with the naive implementation, will typically use fewer multi-controlled $X$ gates and/or uses multi-controlled $X$ gates with fewer control qubits. Specifically, included in this code is an optimization procedure that attempts to minimze the total number of control qubits across all multi-controlled $X$ gates. Given that multi-controlled $X$ gates can be implemented with circuit depth linear in the number of controls ([Saeedi and Pedram 2013](http://arxiv.org/abs/1303.3557)), this heuristic roughly optimizes for depth of the circuit while using no ancillae.
 
 ### Implementation Details
 
