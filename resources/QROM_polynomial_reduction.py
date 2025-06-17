@@ -31,7 +31,7 @@ from .polynomial_reduction_mod2 import *
 # Requirements:
 #	QuantumCircuit, QuantumRegister, AncillaRegister from qiskit.circuit
 #	get_monomials_mod2 from .polynomial_reduction_mod2
-
+#	brute_force_flips from .
 
 def get_QROM_reduced_circuit(f_1_list, n, optimize_flips = True, flip_spec = 0):
 	
@@ -74,8 +74,29 @@ def get_QROM_reduced_circuit(f_1_list, n, optimize_flips = True, flip_spec = 0):
 	
 # ----------------------------------------------------------------------------------------	
 
-def get_control_count(x_list, n):
-	monomials = get_monomials_mod2(x_list, n)
+# Control Count
+#
+# Description:
+#	Given a function f (specified as in get_QROM_reduced_circuit above), returns the total
+# 	number of 'control points' in the corresponding QROM circuit, assuming no input bit 
+#	flips. 
+#
+# Inputs:
+#	f_1_list - the specification of the function f: a list of non-negative integers
+#		between 0 and 2^n - 1, whose n-bit binary representation are the bit strings that
+#		give f=1.
+#
+#	n - the number of input qubits
+#
+# Outputs:
+#	num_controls - the number of control points
+#
+# Requirements:
+#	get_monomials_mod2 and get_bit_inds from .polynomial_reduction_mod2
+
+
+def get_control_count(f_1_list, n):
+	monomials = get_monomials_mod2(f_1_list, n)
 	num_controls = 0
 	for m in monomials:
 		_, inds_1 = get_bit_inds(m,n)
@@ -84,18 +105,40 @@ def get_control_count(x_list, n):
 	
 # ----------------------------------------------------------------------------------------	
 
-def brute_force_flips(x_list, n):
+# Brute Force Flips
+#
+# Description:
+#	Given a function f (specified as in get_QROM_reduced_circuit above), search over the 
+#	possible flips/negations of input bits to minimize the control point count of the QROM
+#	circuit.
+#
+# Inputs:
+#	f_1_list - the specification of the function f: a list of non-negative integers
+#		between 0 and 2^n - 1, whose n-bit binary representation are the bit strings that
+#		give f=1.
+#
+#	n - the number of input qubits
+#
+# Outputs:
+#	k_best - the integer encoding of the optimal input bit flips
+#	control_count_best - the optimal number of control points
+#
+# Requirements:
+#	get_control_count from .
 
-	# f=0, no flips
-	f_best = 0
-	control_count_best = get_control_count(x_list, n)
+def brute_force_flips(f_1_list, n):
 	
-	# f = 1, ..., 2^n-1
-	for f in range(1,2**n):
-		x_list_flipped = [x^f for x in x_list]
-		control_count = get_control_count(x_list_flipped, n)
+	# k encodes the possible flips of the input bits
+	# k=0, no flips
+	k_best = 0
+	control_count_best = get_control_count(f_1_list, n)
+	
+	# k = 1, ..., 2^n-1: all other possible flips
+	for k in range(1,2**n):
+		f_1_list_flipped = [x^k for x in f_1_list]
+		control_count = get_control_count(f_1_list_flipped, n)
 		if control_count < control_count_best:
-			f_best = f
+			k_best = k
 			control_count_best = control_count
 		
-	return f_best, control_count_best
+	return k_best, control_count_best
