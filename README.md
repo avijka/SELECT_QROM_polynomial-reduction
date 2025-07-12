@@ -7,7 +7,7 @@ and uses no ancillae. The resulting circuit, as compared with the naive implemen
 
 ### Implementation Details
 
-For implementation details, a thorough comparison with the naive implementation, and a discussion of limitations and future steps, see [the iPython notebook](https://github.com/avijka/SELECT_QROM_polynomial-reduction/blob/main/SELECT_QROM_polynomial-reduction.ipynb) in this repository. For a basic usage example, see below.
+For implementation details, a thorough comparison with the naive implementation, and a discussion of limitations and future steps, see [the Jupyter notebook](https://github.com/avijka/SELECT_QROM_polynomial-reduction/blob/main/SELECT_QROM_polynomial-reduction.ipynb) in this repository. For a basic usage example, see below.
 
 ### Usage Example
 The main function is `get_QROM_reduced_circuit`, which, at minimum, takes in a list of integers (which represents the function $f$) and the number of input qubits $n$. The list contains elements of $`\{0,1,\ldots 2^n -1\}`$, whose binary representations match those bit string inputs for which $f=1$. For example, if $f(0001)=1$, $f(0011)=1$, and $f(0101)=1$, and all other inputs give $0$, pass the list `[1,3,5]` to `get_QROM_reduced_circuit`:
